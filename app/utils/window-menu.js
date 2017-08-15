@@ -214,6 +214,43 @@ export function setup() {
         }
     ];
 
+    const templateFile = {
+            label: 'File',
+            submenu: [
+                {
+                    // The click action gets injected from gh-switcher.
+                    label: 'Preferences',
+                    accelerator: 'CmdOrCtrl+,'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Close',
+                    accelerator: 'CmdOrCtrl+W',
+                    role: 'close'
+                },
+                {
+                    label: 'Quit',
+                    accelerator: 'CmdOrCtrl+Q',
+                    click() {
+                        ipcRenderer.send('shutdown-requested', true);
+                        browserWindow.close();
+                    }
+                }
+            ]
+    };
+
+    const templateHelp = [
+            {
+                type: 'separator'
+            },
+            {
+                label: 'About Ghost',
+                role: 'about'
+            }
+        ];
+
     if (process.platform === 'darwin') {
         // Mac OS is a special snowflake.
         template.unshift({
@@ -272,6 +309,7 @@ export function setup() {
     } else if (process.platform === 'linux') {
         template.find((i) => i.label === 'Window').submenu.splice(1, 0, {
             label: 'Maximize',
+            //accelerator: 'CmdOrCtrl+X',
             click(item, focusedWindow) {
                 if (focusedWindow) {
                     focusedWindow.maximize();
@@ -279,23 +317,23 @@ export function setup() {
             }
         });
 
-        template.unshift({
-            label: 'File',
-            submenu: [{
-                // The click action gets injected from gh-switcher.
-                label: 'Preferences',
-                accelerator: 'CmdOrCtrl+,'
-            }]
-        });
+        let menuHelp = template.find((i) => i.label === 'Help').submenu;
+        template.find((i) => i.label === 'Help').submenu = menuHelp.concat(templateHelp);
+        template.unshift(templateFile);
     } else if (process.platform === 'win32') {
-        template.unshift({
-            label: 'File',
-            submenu: [{
-                // The click action gets injected from gh-switcher.
-                label: 'Preferences',
-                accelerator: 'CmdOrCtrl+,'
-            }]
+        template.find((i) => i.label === 'Window').submenu.splice(1, 0, {
+            label: 'Maximize',
+            //accelerator: 'CmdOrCtrl+X',
+            click(item, focusedWindow) {
+                if (focusedWindow) {
+                    focusedWindow.maximize();
+                }
+            }
         });
+
+        let menuHelp = template.find((i) => i.label === 'Help').submenu;
+        template.find((i) => i.label === 'Help').submenu = menuHelp.concat(templateHelp);
+        template.unshift(templateFile);
     }
 
     return template;
