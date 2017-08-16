@@ -23,7 +23,7 @@ It's heavily recommended that you develop on Windows 10 - it has numerous perfor
 * Install Visual Studio Community 2015 Edition. (Custom Install, Select Visual C++ during the installation)
 * Set the environment variable GYP_MSVS_VERSION=2015
 * Run the command prompt as Administrator
-* If the above steps have not worked or you are unsure please visit http://www.serverpals.com/blog/building-using-node-gyp-with-visual-studio-express-2015-on-windows-10-pro-x64 for a full walkthrough
+* If the above steps have not worked or you are unsure please visit https://www.nullivex.com/blog/building-using-node-gyp-with-visual-studio-express-2015-on-windows-10-pro-x64 for a full walkthrough
 
 
 ##### Older Windows Versions:
